@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class ComplianceLog {
@@ -10,15 +9,11 @@ public class ComplianceLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private SensorReading sensorReading;
+    private String status;
 
-    @ManyToOne
-    private ComplianceThreshold thresholdUsed;
+    public Long getId() { return id; }
+    public String getStatus() { return status; }
 
-    private String statusAssigned;
-    private String remarks;
-    private LocalDateTime loggedAt = LocalDateTime.now();
-
-    // getters & setters
+    public void setId(Long id) { this.id = id; }
+    public void setStatus(String status) { this.status = status; }
 }

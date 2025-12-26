@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class ComplianceThreshold {
@@ -10,13 +9,11 @@ public class ComplianceThreshold {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String sensorType;
+    private double maxValue;
 
-    private Double minValue;
-    private Double maxValue;
-    private String severityLevel;
-    private LocalDateTime createdAt = LocalDateTime.now();
+    public Long getId() { return id; }
+    public double getMaxValue() { return maxValue; }
 
-    // getters & setters
+    public void setId(Long id) { this.id = id; }
+    public void setMaxValue(double maxValue) { this.maxValue = maxValue; }
 }

@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class Sensor {
@@ -10,16 +9,11 @@ public class Sensor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String sensorCode;
+    private String type;
 
-    private String sensorType;
+    public Long getId() { return id; }
+    public String getType() { return type; }
 
-    @ManyToOne
-    private Location location;
-
-    private LocalDateTime installedAt = LocalDateTime.now();
-    private Boolean isActive = true;
-
-    // getters & setters
+    public void setId(Long id) { this.id = id; }
+    public void setType(String type) { this.type = type; }
 }

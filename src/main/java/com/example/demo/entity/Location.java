@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class Location {
@@ -10,12 +9,11 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String locationName;
+    private String name;
 
-    private String description;
-    private String region;
-    private LocalDateTime createdAt = LocalDateTime.now();
+    public Long getId() { return id; }
+    public String getName() { return name; }
 
-    // getters & setters
+    public void setId(Long id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
 }

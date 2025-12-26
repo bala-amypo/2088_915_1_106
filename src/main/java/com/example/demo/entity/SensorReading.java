@@ -10,12 +10,14 @@ public class SensorReading {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Sensor sensor;
+    private double value;
+    private LocalDateTime timestamp;
 
-    private Double readingValue;
-    private LocalDateTime readingTime = LocalDateTime.now();
-    private String status;
+    public Long getId() { return id; }
+    public double getValue() { return value; }
+    public LocalDateTime getTimestamp() { return timestamp; }
 
-    // getters & setters
+    public void setId(Long id) { this.id = id; }
+    public void setValue(double value) { this.value = value; }
+    public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
 }
