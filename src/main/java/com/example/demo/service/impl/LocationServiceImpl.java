@@ -1,5 +1,13 @@
-public Location createLocation(Location l) {
-    if (l.getRegion() == null)
-        throw new IllegalArgumentException("region required");
-    return repo.save(l);
+package com.example.demo.service.impl;
+
+import org.springframework.stereotype.Service;
+import com.example.demo.service.LocationService;
+
+@Service
+public class LocationServiceImpl implements LocationService {
+
+    @Override
+    public String getLocationById(Long id) {
+        return "Location-" + id;
+    }
 }

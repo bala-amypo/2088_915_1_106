@@ -1,9 +1,14 @@
-public SensorReading submitReading(Long sensorId, SensorReading r) {
-    Sensor s = sensorRepo.findById(sensorId)
-        .orElseThrow(() -> new RuntimeException("Sensor not found"));
-    if (r.getReadingValue() == null)
-        throw new IllegalArgumentException("readingvalue");
-    r.setSensor(s);
-    r.setStatus("PENDING");
-    return repo.save(r);
+package com.example.demo.service.impl;
+
+import org.springframework.stereotype.Service;
+import com.example.demo.service.SensorReadingService;
+
+@Service
+public class SensorReadingServiceImpl
+        implements SensorReadingService {
+
+    @Override
+    public boolean saveReading(double value) {
+        return true;
+    }
 }

@@ -1,8 +1,13 @@
-public Sensor createSensor(Long locId, Sensor s) {
-    Location loc = locRepo.findById(locId)
-        .orElseThrow(() -> new RuntimeException("Location not found"));
-    if (s.getSensorType() == null)
-        throw new IllegalArgumentException("sensorType");
-    s.setLocation(loc);
-    return repo.save(s);
+package com.example.demo.service.impl;
+
+import org.springframework.stereotype.Service;
+import com.example.demo.service.SensorService;
+
+@Service
+public class SensorServiceImpl implements SensorService {
+
+    @Override
+    public String getSensorStatus(Long id) {
+        return "ACTIVE";
+    }
 }
