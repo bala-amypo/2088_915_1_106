@@ -1,67 +1,19 @@
-package com.example.demo.service.impl;
+public ComplianceLog evaluateReading(Long id) {
+    SensorReading r = readingRepo.findById(id)
+        .orElseThrow(() -> new RuntimeException("Reading not found"));
 
-import com.example.demo.entity.ComplianceLog;
-import com.example.demo.entity.ComplianceThreshold;
-import com.example.demo.entity.SensorReading;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.ComplianceLogRepository;
-import com.example.demo.repository.ComplianceThresholdRepository;
-import com.example.demo.repository.SensorReadingRepository;
-import com.example.demo.service.ComplianceEvaluationService;
-import org.springframework.stereotype.Service;
+    List<ComplianceLog> existing = logRepo.findBySensorReading_Id(id);
+    if (!existing.isEmpty()) return existing.get(0);
 
-import java.time.LocalDateTime;
-import java.util.List;
+    ComplianceThreshold t = thresholdRepo.findBySensorType(r.getSensor().getSensorType())
+        .orElseThrow(() -> new RuntimeException("Threshold not found"));
 
-@Service
-public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationService {
-
-    private final SensorReadingRepository readingRepository;
-    private final ComplianceThresholdRepository thresholdRepository;
-    private final ComplianceLogRepository logRepository;
-
-    public ComplianceEvaluationServiceImpl(
-            SensorReadingRepository readingRepository,
-            ComplianceThresholdRepository thresholdRepository,
-            ComplianceLogRepository logRepository) {
-        this.readingRepository = readingRepository;
-        this.thresholdRepository = thresholdRepository;
-        this.logRepository = logRepository;
-    }
-
-    @Override
-    public ComplianceLog evaluateReading(Long readingId) {
-
-        SensorReading reading = readingRepository.findById(readingId)
-                .orElseThrow(() -> new ResourceNotFoundException("not found"));
-
-        ComplianceThreshold threshold = thresholdRepository
-                .findBySensorType(reading.getSensor().getSensorType())
-                .orElseThrow(() -> new ResourceNotFoundException("not found"));
-
-        String status = (reading.getReadingValue() >= threshold.getMinValue()
-                && reading.getReadingValue() <= threshold.getMaxValue())
-                ? "COMPLIANT" : "NON_COMPLIANT";
-
-        reading.setStatus(status);
-
-        ComplianceLog log = new ComplianceLog();
-        log.setSensorReading(reading);
-        log.setThresholdUsed(threshold);
-        log.setStatusAssigned(status);
-        log.setLoggedAt(LocalDateTime.now());
-
-        return logRepository.save(log);
-    }
-
-    @Override
-    public List<ComplianceLog> getLogsByReading(Long readingId) {
-        return logRepository.findBySensorReading_Id(readingId);
-    }
-
-    @Override
-    public ComplianceLog getLog(Long id) {
-        return logRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("not found"));
-    }
+    ComplianceLog log = new ComplianceLog();
+    log.setSensorReading(r);
+    log.setThresholdUsed(t);
+    log.setStatusAssigned(
+        (r.getReadingValue() >= t.getMinValue() && r.getReadingValue() <= t.getMaxValue())
+        ? "SAFE" : "UNSAFE"
+    );
+    return logRepo.save(log);
 }
