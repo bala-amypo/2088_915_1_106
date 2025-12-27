@@ -13,8 +13,10 @@ public class ComplianceLog {
     @OneToOne
     private SensorReading sensorReading;
 
-    private String statusAssigned;
+    @ManyToOne
+    private ComplianceThreshold thresholdUsed;
 
+    private String statusAssigned;
     private String severityLevel;
 
     private LocalDateTime loggedAt;
@@ -37,6 +39,14 @@ public class ComplianceLog {
 
     public void setSensorReading(SensorReading sensorReading) {
         this.sensorReading = sensorReading;
+    }
+
+    public ComplianceThreshold getThresholdUsed() {
+        return thresholdUsed;
+    }
+
+    public void setThresholdUsed(ComplianceThreshold thresholdUsed) {
+        this.thresholdUsed = thresholdUsed;
     }
 
     public String getStatusAssigned() {
