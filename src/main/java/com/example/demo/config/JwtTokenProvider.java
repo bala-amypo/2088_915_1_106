@@ -1,34 +1,36 @@
 package com.example.demo.config;
 
+import com.example.demo.entity.Role;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
 
-@Component   // ⭐ THIS IS THE FIX
+@Component
 public class JwtTokenProvider {
 
     private final Key key;
-    private final long jwtExpiration;
+    private final long jwtExpirationMs = 3600000; // 1 hour
 
-    public JwtTokenProvider(
-            @Value("${jwt.secret}") String secret,
-            @Value("${jwt.expiration}") long jwtExpiration) {
-
-        this.key = Keys.hmacShaKeyFor(secret.getBytes());
-        this.jwtExpiration = jwtExpiration;
+    public JwtTokenProvider() {
+        // MUST be at least 32 chars
+        this.key = Keys.hmacShaKeyFor(
+                "VerySecretKeyForJWTsChangeMe1234567890".getBytes()
+        );
     }
 
-    public String generateToken(Long userId, String email, Enum<?> role) {
+    public String generateToken(Long userId, String email, Role role) {
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + jwtExpirationMs);
+
         return Jwts.builder()
                 .setSubject(String.valueOf(userId))
                 .claim("email", email)
                 .claim("role", role.name())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .setIssuedAt(now)
+                .setExpiration(expiry)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }

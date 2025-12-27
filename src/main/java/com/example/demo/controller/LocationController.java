@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/locations")
+@RequestMapping("/locations")
 public class LocationController {
 
     private final LocationService locationService;
@@ -17,17 +17,17 @@ public class LocationController {
     }
 
     @PostMapping
-    public Location create(@RequestBody Location location) {
+    public Location createLocation(@RequestBody Location location) {
         return locationService.createLocation(location);
     }
 
-    @GetMapping
-    public List<Location> getAll() {
-        return locationService.getAllLocations();
+    @GetMapping("/{id}")
+    public Location getLocation(@PathVariable Long id) {
+        return locationService.getLocation(id);
     }
 
-    @GetMapping("/{id}")
-    public Location getById(@PathVariable Long id) {
-        return locationService.getLocation(id);
+    @GetMapping
+    public List<Location> getAllLocations() {
+        return locationService.getAllLocations();
     }
 }
