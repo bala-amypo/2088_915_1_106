@@ -4,39 +4,23 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "compliance_logs")
 public class ComplianceLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String statusAssigned;
-    private String remarks;
-
-    private LocalDateTime loggedAt = LocalDateTime.now();
-
-    @ManyToOne
-    @JoinColumn(name = "reading_id")
+    @OneToOne
     private SensorReading sensorReading;
 
-    @ManyToOne
-    @JoinColumn(name = "threshold_id")
-    private ComplianceThreshold thresholdUsed;
+    private String statusAssigned;
+
+    private String severityLevel;
+
+    private LocalDateTime loggedAt;
 
     public ComplianceLog() {
-    }
-
-    public ComplianceLog(SensorReading sensorReading,
-                         ComplianceThreshold thresholdUsed,
-                         String statusAssigned,
-                         String remarks,
-                         LocalDateTime loggedAt) {
-        this.sensorReading = sensorReading;
-        this.thresholdUsed = thresholdUsed;
-        this.statusAssigned = statusAssigned;
-        this.remarks = remarks;
-        this.loggedAt = loggedAt;
+        this.loggedAt = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -47,22 +31,6 @@ public class ComplianceLog {
         this.id = id;
     }
 
-    public String getStatusAssigned() {
-        return statusAssigned;
-    }
-
-    public void setStatusAssigned(String statusAssigned) {
-        this.statusAssigned = statusAssigned;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
     public SensorReading getSensorReading() {
         return sensorReading;
     }
@@ -71,11 +39,27 @@ public class ComplianceLog {
         this.sensorReading = sensorReading;
     }
 
-    public ComplianceThreshold getThresholdUsed() {
-        return thresholdUsed;
+    public String getStatusAssigned() {
+        return statusAssigned;
     }
 
-    public void setThresholdUsed(ComplianceThreshold thresholdUsed) {
-        this.thresholdUsed = thresholdUsed;
+    public void setStatusAssigned(String statusAssigned) {
+        this.statusAssigned = statusAssigned;
+    }
+
+    public String getSeverityLevel() {
+        return severityLevel;
+    }
+
+    public void setSeverityLevel(String severityLevel) {
+        this.severityLevel = severityLevel;
+    }
+
+    public LocalDateTime getLoggedAt() {
+        return loggedAt;
+    }
+
+    public void setLoggedAt(LocalDateTime loggedAt) {
+        this.loggedAt = loggedAt;
     }
 }
