@@ -2,10 +2,8 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "sensors")
 public class Sensor {
 
     @Id
@@ -17,70 +15,27 @@ public class Sensor {
 
     private String sensorType;
 
-    private Boolean isActive = true;
+    @ManyToOne
+    private Location location;
 
     private LocalDateTime installedAt = LocalDateTime.now();
 
-    @ManyToOne
-    @JoinColumn(name = "location_id")
-    private Location location;
+    private Boolean isActive = true;
 
-    @OneToMany(mappedBy = "sensor")
-    private List<SensorReading> readings;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Sensor() {
-    }
+    public String getSensorCode() { return sensorCode; }
+    public void setSensorCode(String sensorCode) { this.sensorCode = sensorCode; }
 
-    public Sensor(String sensorCode, String sensorType, Location location,
-                  LocalDateTime installedAt, Boolean isActive) {
-        this.sensorCode = sensorCode;
-        this.sensorType = sensorType;
-        this.location = location;
-        this.installedAt = installedAt;
-        this.isActive = isActive;
-    }
+    public String getSensorType() { return sensorType; }
+    public void setSensorType(String sensorType) { this.sensorType = sensorType; }
 
-    public Long getId() {
-        return id;
-    }
+    public Location getLocation() { return location; }
+    public void setLocation(Location location) { this.location = location; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public LocalDateTime getInstalledAt() { return installedAt; }
 
-    public String getSensorCode() {
-        return sensorCode;
-    }
-
-    public void setSensorCode(String sensorCode) {
-        this.sensorCode = sensorCode;
-    }
-
-    public String getSensorType() {
-        return sensorType;
-    }
-
-    public void setSensorType(String sensorType) {
-        this.sensorType = sensorType;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean active) {
-        isActive = active;
-    }
-
-    public LocalDateTime getInstalledAt() {
-        return installedAt;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
+    public Boolean getIsActive() { return isActive; }
+    public void setIsActive(Boolean active) { isActive = active; }
 }

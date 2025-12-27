@@ -12,35 +12,16 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleNotFound(
-            ResourceNotFoundException ex) {
-
-        Map<String, Object> body = new HashMap<>();
-        body.put("success", false);
-        body.put("message", ex.getMessage());
-
+    public ResponseEntity<Map<String, String>> handleNotFound(ResourceNotFoundException ex) {
+        Map<String, String> body = new HashMap<>();
+        body.put("error", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, Object>> handleBadRequest(
-            IllegalArgumentException ex) {
-
-        Map<String, Object> body = new HashMap<>();
-        body.put("success", false);
-        body.put("message", ex.getMessage());
-
+    public ResponseEntity<Map<String, String>> handleBadRequest(IllegalArgumentException ex) {
+        Map<String, String> body = new HashMap<>();
+        body.put("error", ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> handleGeneric(
-            Exception ex) {
-
-        Map<String, Object> body = new HashMap<>();
-        body.put("success", false);
-        body.put("message", "Internal server error");
-
-        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
