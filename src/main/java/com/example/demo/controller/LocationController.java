@@ -10,24 +10,24 @@ import java.util.List;
 @RequestMapping("/api/locations")
 public class LocationController {
 
-    private final LocationService service;
+    private final LocationService locationService;
 
-    public LocationController(LocationService service) {
-        this.service = service;
+    public LocationController(LocationService locationService) {
+        this.locationService = locationService;
     }
 
     @PostMapping
     public Location create(@RequestBody Location location) {
-        return service.createLocation(location);
+        return locationService.createLocation(location);
     }
 
     @GetMapping
     public List<Location> getAll() {
-        return service.getAllLocations();
+        return locationService.getAllLocations();
     }
 
     @GetMapping("/{id}")
-    public Location get(@PathVariable Long id) {
-        return service.getLocation(id);
+    public Location getById(@PathVariable Long id) {
+        return locationService.getLocation(id);
     }
 }

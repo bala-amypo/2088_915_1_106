@@ -10,25 +10,26 @@ import java.util.List;
 @RequestMapping("/api/readings")
 public class SensorReadingController {
 
-    private final SensorReadingService service;
+    private final SensorReadingService readingService;
 
-    public SensorReadingController(SensorReadingService service) {
-        this.service = service;
+    public SensorReadingController(SensorReadingService readingService) {
+        this.readingService = readingService;
     }
 
     @PostMapping("/{sensorId}")
-    public SensorReading submit(@PathVariable Long sensorId,
-                                @RequestBody SensorReading reading) {
-        return service.submitReading(sensorId, reading);
+    public SensorReading submit(
+            @PathVariable Long sensorId,
+            @RequestBody SensorReading reading) {
+        return readingService.submitReading(sensorId, reading);
     }
 
     @GetMapping("/sensor/{sensorId}")
     public List<SensorReading> getBySensor(@PathVariable Long sensorId) {
-        return service.getReadingsBySensor(sensorId);
+        return readingService.getReadingsBySensor(sensorId);
     }
 
     @GetMapping("/{id}")
-    public SensorReading get(@PathVariable Long id) {
-        return service.getReading(id);
+    public SensorReading getById(@PathVariable Long id) {
+        return readingService.getReading(id);
     }
 }
