@@ -1,19 +1,81 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "compliance_logs")
 public class ComplianceLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String status;
+    private String statusAssigned;
+    private String remarks;
 
-    public Long getId() { return id; }
-    public String getStatus() { return status; }
+    private LocalDateTime loggedAt = LocalDateTime.now();
 
-    public void setId(Long id) { this.id = id; }
-    public void setStatus(String status) { this.status = status; }
+    @ManyToOne
+    @JoinColumn(name = "reading_id")
+    private SensorReading sensorReading;
+
+    @ManyToOne
+    @JoinColumn(name = "threshold_id")
+    private ComplianceThreshold thresholdUsed;
+
+    public ComplianceLog() {
+    }
+
+    public ComplianceLog(SensorReading sensorReading,
+                         ComplianceThreshold thresholdUsed,
+                         String statusAssigned,
+                         String remarks,
+                         LocalDateTime loggedAt) {
+        this.sensorReading = sensorReading;
+        this.thresholdUsed = thresholdUsed;
+        this.statusAssigned = statusAssigned;
+        this.remarks = remarks;
+        this.loggedAt = loggedAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getStatusAssigned() {
+        return statusAssigned;
+    }
+
+    public void setStatusAssigned(String statusAssigned) {
+        this.statusAssigned = statusAssigned;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public SensorReading getSensorReading() {
+        return sensorReading;
+    }
+
+    public void setSensorReading(SensorReading sensorReading) {
+        this.sensorReading = sensorReading;
+    }
+
+    public ComplianceThreshold getThresholdUsed() {
+        return thresholdUsed;
+    }
+
+    public void setThresholdUsed(ComplianceThreshold thresholdUsed) {
+        this.thresholdUsed = thresholdUsed;
+    }
 }

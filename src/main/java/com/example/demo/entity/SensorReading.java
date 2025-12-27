@@ -2,22 +2,77 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
+@Table(name = "sensor_readings")
 public class SensorReading {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private double value;
-    private LocalDateTime timestamp;
+    private Double readingValue;
 
-    public Long getId() { return id; }
-    public double getValue() { return value; }
-    public LocalDateTime getTimestamp() { return timestamp; }
+    private LocalDateTime readingTime = LocalDateTime.now();
 
-    public void setId(Long id) { this.id = id; }
-    public void setValue(double value) { this.value = value; }
-    public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
+    private String status;
+
+    @ManyToOne
+    @JoinColumn(name = "sensor_id")
+    private Sensor sensor;
+
+    @OneToMany(mappedBy = "sensorReading")
+    private List<ComplianceLog> logs;
+
+    public SensorReading() {
+    }
+
+    public SensorReading(Sensor sensor, Double readingValue,
+                         LocalDateTime readingTime, String status) {
+        this.sensor = sensor;
+        this.readingValue = readingValue;
+        this.readingTime = readingTime;
+        this.status = status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Double getReadingValue() {
+        return readingValue;
+    }
+
+    public void setReadingValue(Double readingValue) {
+        this.readingValue = readingValue;
+    }
+
+    public LocalDateTime getReadingTime() {
+        return readingTime;
+    }
+
+    public void setReadingTime(LocalDateTime readingTime) {
+        this.readingTime = readingTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Sensor getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
+    }
 }

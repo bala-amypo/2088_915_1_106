@@ -1,19 +1,86 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
+@Table(name = "sensors")
 public class Sensor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String type;
+    @Column(unique = true)
+    private String sensorCode;
 
-    public Long getId() { return id; }
-    public String getType() { return type; }
+    private String sensorType;
 
-    public void setId(Long id) { this.id = id; }
-    public void setType(String type) { this.type = type; }
+    private Boolean isActive = true;
+
+    private LocalDateTime installedAt = LocalDateTime.now();
+
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
+
+    @OneToMany(mappedBy = "sensor")
+    private List<SensorReading> readings;
+
+    public Sensor() {
+    }
+
+    public Sensor(String sensorCode, String sensorType, Location location,
+                  LocalDateTime installedAt, Boolean isActive) {
+        this.sensorCode = sensorCode;
+        this.sensorType = sensorType;
+        this.location = location;
+        this.installedAt = installedAt;
+        this.isActive = isActive;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getSensorCode() {
+        return sensorCode;
+    }
+
+    public void setSensorCode(String sensorCode) {
+        this.sensorCode = sensorCode;
+    }
+
+    public String getSensorType() {
+        return sensorType;
+    }
+
+    public void setSensorType(String sensorType) {
+        this.sensorType = sensorType;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean active) {
+        isActive = active;
+    }
+
+    public LocalDateTime getInstalledAt() {
+        return installedAt;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 }
